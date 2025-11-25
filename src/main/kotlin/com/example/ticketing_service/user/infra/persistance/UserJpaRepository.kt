@@ -1,8 +1,6 @@
 package com.example.ticketing_service.user.infra.persistance
 
 import com.example.ticketing_service.user.domain.User
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface UserRepository {
-    fun save(user : User) : User
-    fun findById(id : Long) : User?
-}
+interface UserJpaRepository : JpaRepository<User, Long>
