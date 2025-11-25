@@ -15,6 +15,7 @@ enum class ErrorCode (
     // User
     USER_NOT_FOUND("US001", HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     EMAIL_DUPLICATION("US002", HttpStatus.BAD_REQUEST, "이미 존재하는 이메일입니다."),
+    INVALID_EMAIL_FORMAT("U003", HttpStatus.BAD_REQUEST, "올바르지 않은 이메일 형식입니다."),
 
     // Concert/Seat
     SEAT_NOT_FOUND("SE001", HttpStatus.NOT_FOUND, "좌석을 찾을 수 없습니다."),

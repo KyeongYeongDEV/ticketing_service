@@ -34,7 +34,7 @@ class User(
 
         fun create(name : String, email : String, password : String) : User {
             if(!EMAIL_PATTERN.matches(email)) {
-                throw BusinessException(ErrorCode.INVALID_INPUT_VALUE)
+                throw BusinessException(ErrorCode.INVALID_EMAIL_FORMAT)
             }
 
             return User(
