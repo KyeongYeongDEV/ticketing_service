@@ -3,6 +3,7 @@ package com.example.ticketing_service.user.application
 import com.example.ticketing_service.global.exception.BusinessException
 import com.example.ticketing_service.global.exception.ErrorCode
 import com.example.ticketing_service.user.application.dto.SignupCommand
+import com.example.ticketing_service.user.application.dto.UserResponse
 import com.example.ticketing_service.user.domain.User
 import com.example.ticketing_service.user.domain.UserRepository
 
@@ -36,8 +37,10 @@ fun signup(command : SignupCommand) : Long{
 
 
     @Transactional(readOnly = true)
-    fun getUser(userId : Long) : User {
-      return userRepository.findById(userId)
+    fun getUser(userId : Long) : UserResponse {
+      val user = userRepository.findById(userId)
           ?: throw BusinessException(ErrorCode.USER_NOT_FOUND)
+
+        return UserResponse.from(user);
     }
 }
