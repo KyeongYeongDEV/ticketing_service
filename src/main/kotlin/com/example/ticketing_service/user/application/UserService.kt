@@ -2,9 +2,10 @@ package com.example.ticketing_service.user.application
 
 import com.example.ticketing_service.global.exception.BusinessException
 import com.example.ticketing_service.global.exception.ErrorCode
+import com.example.ticketing_service.user.application.dto.SignupCommand
 import com.example.ticketing_service.user.domain.User
 import com.example.ticketing_service.user.domain.UserRepository
-import com.example.ticketing_service.user.presentation.dto.SignupCommand
+
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.data.convert.Jsr310Converters
 

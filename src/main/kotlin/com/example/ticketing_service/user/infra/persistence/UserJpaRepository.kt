@@ -1,4 +1,4 @@
-package com.example.ticketing_service.user.infra.persistance
+package com.example.ticketing_service.user.infra.persistence
 
 import com.example.ticketing_service.user.domain.User
 import org.springframework.data.jpa.repository.JpaRepository

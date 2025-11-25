@@ -1,4 +1,4 @@
-package com.example.ticketing_service.user.presentation.dto
+import com.example.ticketing_service.user.application.dto.SignupCommand
 
 data class SignupRequest(
     val name : String,
