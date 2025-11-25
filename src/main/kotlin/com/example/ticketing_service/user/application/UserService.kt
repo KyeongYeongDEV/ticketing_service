@@ -20,7 +20,7 @@ class UserService (
     @Transactional
 fun signup(command : SignupCommand) : Long{
         // TODO: 비번 암호화
-        val newUser = User(
+        val newUser = User.create(
             name = command.name,
             email = command.email,
             password = command.password
