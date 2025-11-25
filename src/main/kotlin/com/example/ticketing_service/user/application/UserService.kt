@@ -2,6 +2,7 @@ package com.example.ticketing_service.user.application
 
 import com.example.ticketing_service.user.domain.User
 import com.example.ticketing_service.user.domain.UserRepository
+import com.example.ticketing_service.user.presentation.dto.SignupCommand
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -11,8 +12,12 @@ class UserService (
     private val userRepository: UserRepository
 ){
     @Transactional
-    fun signup(name : String, email : String, password : String) : Long{
-        val newUser = User(name = name, email = email, password = password)
+    fun signup(command : SignupCommand) : Long{
+        val newUser = User(
+            name = command.name,
+            email = command.email,
+            password =  command.password
+        )
         return userRepository.save(newUser).id!!
     }
 

@@ -18,8 +18,9 @@ class UserController (
 ){
     @PostMapping("/signup")
     fun signup(@RequestBody request : SignupRequest) : ResponseEntity<Long> {
-        //TODO: service layer에 Dto 생성하기
-        val user = userService.signup(request.name, request.email, request.password);
+        val command = request.toCommand()
+        val user = userService.signup(command)
+
         return ResponseEntity.ok(user)
     }
 
