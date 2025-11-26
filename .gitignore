@@ -1,1 +1,50 @@
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+### Gradle ###
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### Maven (혹시 사용할 경우를 대비) ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+### Spring Boot ###
+logs/
+*.log
+*.pid
+tms/
+
+### OS Specific ###
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+### VS Code ###
+.vscode/
+
+### Secrets & Environment Variables (중요!) ###
 .env
+.env.*
+application-secret.yml
+application-prod.yml
+
+### Kotlin ###
+*.hprof
+*.pyc
