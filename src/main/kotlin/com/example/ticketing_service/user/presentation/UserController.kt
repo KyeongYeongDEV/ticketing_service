@@ -1,9 +1,10 @@
 package com.example.ticketing_service.user.presentation
 
-import SignupRequest
+
 import com.example.ticketing_service.global.common.response.ApiResponse
 import com.example.ticketing_service.user.application.UserService
 import com.example.ticketing_service.user.application.dto.UserResponse
+import com.example.ticketing_service.user.presentation.dto.SignupRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
