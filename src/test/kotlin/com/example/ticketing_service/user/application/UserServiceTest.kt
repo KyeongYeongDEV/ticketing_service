@@ -29,9 +29,13 @@ class UserServiceTest {
     @DisplayName("회원가입 성공 시 ID를 반환한다")
     fun signup_success() {
         val command = SignupCommand("신짱구", "new@email.com", "pw")
-        val savedUser = User(id = 1L, email = "new@email.com", name = "신짱구", password = "pw")
+        val user = User.create("신짱구", "new@email.com", "pw")
 
-        every { userRepository.save(any()) } returns savedUser
+        val userId = User::class.java.getDeclaredField("id")
+        userId.isAccessible = true
+        userId.set(user, 1L) // DB 대신 userId 생성
+
+        every { userRepository.save(any()) } returns user
 
         val resultId = userService.signup(command)
 

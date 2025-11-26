@@ -13,7 +13,7 @@ import com.example.ticketing_service.global.exception.ErrorCode
 
 @Entity
 @Table(name = "users")
-class User(
+class User private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -29,6 +29,8 @@ class User(
     val name: String
 
 ) : BaseEntity() {
+    protected constructor() : this(null, "", "", "")
+
     companion object {
         private val EMAIL_PATTERN = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
 
