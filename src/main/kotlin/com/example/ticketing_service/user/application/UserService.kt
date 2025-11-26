@@ -8,7 +8,6 @@ import com.example.ticketing_service.user.domain.User
 import com.example.ticketing_service.user.domain.UserRepository
 
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.data.convert.Jsr310Converters
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
