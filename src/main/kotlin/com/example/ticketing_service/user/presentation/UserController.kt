@@ -5,6 +5,7 @@ import com.example.ticketing_service.global.common.response.ApiResponse
 import com.example.ticketing_service.user.application.UserService
 import com.example.ticketing_service.user.application.dto.UserResponse
 import com.example.ticketing_service.user.presentation.dto.SignupRequest
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -20,7 +21,7 @@ class UserController (
     private val userService: UserService
 ){
     @PostMapping("/signup")
-    fun signup(@RequestBody request : SignupRequest) : ResponseEntity<ApiResponse<Long>> {
+    fun signup(@Valid @RequestBody request : SignupRequest) : ResponseEntity<ApiResponse<Long>> {
         val command = request.toCommand()
         val userId = userService.signup(command)
 
