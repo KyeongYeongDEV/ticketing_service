@@ -16,7 +16,12 @@ enum class SeatStatus {
 }
 
 @Entity
-@Table(name = "seats")
+@Table(
+    name = "seats",
+    indexes = [
+        Index(name = "idx_schedule_status", columnList = "schedule_id, status")
+    ]
+)
 class Seat private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
