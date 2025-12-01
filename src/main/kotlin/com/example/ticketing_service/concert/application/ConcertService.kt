@@ -13,14 +13,14 @@ class ConcertService (
     private val scheduleRepository : ConcertScheduleRepository
 ){
     @Transactional(readOnly = true)
-    fun getConcert() : List<ConcertResponse> {
+    fun getConcerts() : List<ConcertResponse> {
         return concertRepository.findAll()
             .map{ ConcertResponse.from(it) }
     }
 
     @Transactional(readOnly = true)
     fun getSchedules(concertId : Long) : List<ConcertScheduleResponse> {
-        return scheduleRepository.findAllByConcertID(concertId)
+        return scheduleRepository.findAllByConcertId(concertId)
             .map { ConcertScheduleResponse.from(it) }
     }
 }
