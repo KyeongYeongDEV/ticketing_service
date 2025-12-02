@@ -5,29 +5,29 @@ import com.example.ticketing_service.concert.presentation.dto.ConcertResponse
 import com.example.ticketing_service.seat.application.SeatService
 import com.example.ticketing_service.seat.presentation.dto.SeatResponse
 import com.ninjasquad.springmockk.MockkBean
-
 import io.mockk.every
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.math.BigDecimal
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext
 
 @WebMvcTest(ConcertController::class)
 class ConcertControllerTest {
     @Autowired
-    lateinit var  mockMvc : MockMvc
+    lateinit var mockMvc: MockMvc
 
     @MockkBean
-    lateinit var  concertService : ConcertService
+    lateinit var concertService: ConcertService
 
     @MockkBean
-    lateinit var seatService : SeatService
+    lateinit var seatService: SeatService
 
     @MockkBean(relaxed = true)
     lateinit var jpaMetamodelMappingContext: JpaMetamodelMappingContext
@@ -43,7 +43,8 @@ class ConcertControllerTest {
         } returns concerts
 
         mockMvc.perform(get("/api/concerts"))
-            .andExpect (status().isOk)
+            .andDo(print())
+            .andExpect(status().isOk)
             .andExpect(jsonPath("$.result").value("SUCCESS"))
             .andExpect(jsonPath("$.data[0].title").value("아이유 콘서트"))
     }
@@ -58,11 +59,10 @@ class ConcertControllerTest {
         every { seatService.getAvailableSeats(scheduleId) } returns seats
 
         mockMvc.perform(get("/api/concerts/schedules/$scheduleId/seats"))
+            .andDo(print())
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.result").value("SUCCESS"))
             .andExpect(jsonPath("$.data[0].seatNo").value(10))
             .andExpect(jsonPath("$.data[0].status").value("AVAILABLE"))
     }
-
-
 }
