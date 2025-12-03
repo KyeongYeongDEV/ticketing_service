@@ -7,8 +7,10 @@ import com.example.ticketing_service.reservation.application.dto.ReserveSeatComm
 import com.example.ticketing_service.reservation.domain.Reservation
 import com.example.ticketing_service.reservation.domain.ReservationRepository
 import com.example.ticketing_service.seat.infra.SeatRepository
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+@Service
 class ReservationService (
     private val reservationRepository: ReservationRepository,
     private val seatRepository: SeatRepository

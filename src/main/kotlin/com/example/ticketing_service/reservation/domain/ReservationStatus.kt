@@ -1,6 +1,6 @@
 package com.example.ticketing_service.reservation.domain
 
-enum class ReservationStatus{
+enum class ReservationStatus {
     PENDING,
     CONFIRMED,
     CANCELLED

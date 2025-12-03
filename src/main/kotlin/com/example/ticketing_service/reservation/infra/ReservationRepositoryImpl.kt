@@ -7,14 +7,14 @@ import java.util.Optional
 
 @Repository
 class ReservationRepositoryImpl (
-    private val jpaRespository : ReservationJpaRepository
+    private val jpaRepository : ReservationJpaRepository
 ) : ReservationRepository {
     override fun save (reservation : Reservation) : Reservation {
-        return jpaRespository.save(reservation)
+        return jpaRepository.save(reservation)
     }
 
     override fun findById(id : Long) : Optional<Reservation> {
-        return jpaRespository.findById(id)
+        return jpaRepository.findById(id)
     }
 
     /**
