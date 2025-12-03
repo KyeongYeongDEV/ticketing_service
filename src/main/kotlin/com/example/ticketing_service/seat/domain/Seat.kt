@@ -98,5 +98,24 @@ class Seat private constructor(
                 price = price
             )
         }
+
+        private fun createDummySchedule(): ConcertSchedule {
+            return ConcertSchedule(
+                concert = Concert(title = "", description = ""),
+                concertDate = LocalDateTime.now(),
+                totalSeats = 0
+            )
+        }
+
+        internal fun createJpaDummy(): Seat {
+            return Seat(
+                id = null,
+                schedule = createDummySchedule(),
+                seatNo = 0,
+                price = BigDecimal.ZERO,
+                status = SeatStatus.AVAILABLE,
+                version = 0
+            )
+        }
     }
 }
