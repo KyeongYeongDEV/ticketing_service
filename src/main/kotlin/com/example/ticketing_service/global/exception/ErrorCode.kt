@@ -20,6 +20,7 @@ enum class ErrorCode (
     // Concert/Seat
     SEAT_NOT_FOUND("SE001", HttpStatus.NOT_FOUND, "좌석을 찾을 수 없습니다."),
     SEAT_ALREADY_RESERVED("SE002", HttpStatus.BAD_REQUEST, "이미 선택된 좌석입니다."),
+    INVALID_SEAT_STATUS("SE002", HttpStatus.BAD_REQUEST, "올바르지 않은 상태입니다."),
 
 
     // Payment

@@ -73,13 +73,16 @@ class Seat private constructor(
         if (this.status != SeatStatus.TEMPORARY) {
             // 점유 상태여야 결제 가능
             // 아니면 에러
-            throw BusinessException(ErrorCode.SEAT_ALREADY_RESERVED)
+            throw BusinessException(ErrorCode.INVALID_SEAT_STATUS)
         }
         this.status = SeatStatus.SOLD
     }
 
     fun cancel() {
         // 만료 -> 점유 취소
+        if (this.status != SeatStatus.TEMPORARY) {
+             throw BusinessException(ErrorCode.INVALID_SEAT_STATUS)
+        }
         this.status = SeatStatus.AVAILABLE
     }
 
