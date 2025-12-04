@@ -11,7 +11,7 @@ import com.example.ticketing_service.reservation.domain.ReservationRepository
 import com.example.ticketing_service.reservation.domain.ReservationStatus
 import com.example.ticketing_service.seat.domain.Seat
 import com.example.ticketing_service.seat.domain.SeatStatus
-import com.example.ticketing_service.seat.infra.SeatRepository
+import com.example.ticketing_service.seat.infra.SeatJpaRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -20,7 +20,6 @@ import io.mockk.slot
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -33,7 +32,7 @@ class ReservationServiceTest {
     lateinit var reservationRepository : ReservationRepository
 
     @MockK
-    lateinit var seatRepository : SeatRepository
+    lateinit var seatRepository : SeatJpaRepository
 
     // Seat 엔터티의 hold() 메소드를 spy로 감시하기 위함
     @MockK(relaxUnitFun = true)
