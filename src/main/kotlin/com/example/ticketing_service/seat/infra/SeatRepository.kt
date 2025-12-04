@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface SeatRepository : JpaRepository<Seat, Long> {
     // 예약 가능한 좌석만 조회
-    fun findAllByScheduleIdAndStatus(schduleId : Long, status : SeatStatus) : List<Seat>
+    fun findAllByScheduleIdAndStatus(scheduleId : Long, status : SeatStatus) : List<Seat>
 }

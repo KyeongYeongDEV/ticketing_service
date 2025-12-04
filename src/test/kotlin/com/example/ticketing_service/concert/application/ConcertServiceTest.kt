@@ -35,7 +35,7 @@ class ConcertServiceTest {
         concerts.forEachIndexed { index, concert ->
             val idField = Concert::class.java.getDeclaredField("id")
             idField.isAccessible = true
-            idField.set(concert, (index + 1). toLong())
+            idField.set(concert, (index + 1).toLong())
         }
 
         every { concertRepository.findAll() } returns concerts
