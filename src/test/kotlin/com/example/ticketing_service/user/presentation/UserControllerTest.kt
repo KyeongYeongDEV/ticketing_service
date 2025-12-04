@@ -3,10 +3,10 @@ package com.example.ticketing_service.user.presentation
 import com.example.ticketing_service.user.application.UserService
 import com.example.ticketing_service.user.application.dto.UserResponse
 import com.example.ticketing_service.user.presentation.dto.SignupRequest
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
+
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,9 +14,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
+
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+
+import org.hamcrest.Matchers.matchesPattern
 
 @WebMvcTest(UserController::class)
 class UserControllerTest {
@@ -36,19 +42,19 @@ class UserControllerTest {
     @Test
     @DisplayName("회원가입 API 성공 시 201 Created와 Location 헤더를 반환한다")
     fun signup_api_success() {
-        // Given
-        val request = SignupRequest("신짱구", "test@email.com", "pw")
+        val request = SignupRequest("신짱구", "test@email.com", "password")
         every { userService.signup(any()) } returns 1L
 
-        // When & Then
         mockMvc.perform(
             post("/api/users/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
         )
+            .andDo(print())
             .andExpect(status().isCreated)
             .andExpect(header().string("Location", "/api/users/1"))
             .andExpect(jsonPath("$.result").value("SUCCESS"))
+
             .andExpect(jsonPath("$.data").value(1))
     }
 
@@ -60,6 +66,7 @@ class UserControllerTest {
         every { userService.getUser(userId) } returns response
 
         mockMvc.perform(get("/api/users/$userId"))
+            .andDo(print())
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.data.email").value("test@email.com"))
             .andExpect(jsonPath("$.data.name").value("신짱구"))
