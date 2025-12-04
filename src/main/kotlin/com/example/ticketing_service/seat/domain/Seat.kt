@@ -73,7 +73,7 @@ class Seat private constructor(
         if (this.status != SeatStatus.TEMPORARY) {
             // 점유 상태여야 결제 가능
             // 아니면 에러
-            throw BusinessException(ErrorCode.SEAT_NOT_FOUND)
+            throw BusinessException(ErrorCode.SEAT_ALREADY_RESERVED)
         }
         this.status = SeatStatus.SOLD
     }
