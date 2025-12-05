@@ -14,7 +14,7 @@ import java.net.URI
 
 
 @RestController
-@RequestMapping("/api/reservation")
+@RequestMapping("/api/reservations")
 class ReservationController (
     private val reservationService : ReservationService
 ){
