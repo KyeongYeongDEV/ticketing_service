@@ -14,7 +14,7 @@ data class SignupRequest(
     val email : String,
 
     @field:NotBlank(message = "비밀번호는 필수입니다.")
-    @field:Size(min = 6, message = "비밀번호는 6자 이상이여야 합니다..")
+    @field:Size(min = 6, message = "비밀번호는 6자 이상이여야 합니다.")
     val password : String
 
 ) {

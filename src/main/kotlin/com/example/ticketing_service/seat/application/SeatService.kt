@@ -1,14 +1,14 @@
 package com.example.ticketing_service.seat.application
 
 import com.example.ticketing_service.seat.domain.SeatStatus
-import com.example.ticketing_service.seat.infra.SeatRepository
+import com.example.ticketing_service.seat.infra.SeatJpaRepository
 import com.example.ticketing_service.seat.presentation.dto.SeatResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class SeatService(
-    private val seatRepository: SeatRepository
+    private val seatRepository: SeatJpaRepository
 ) {
     @Transactional(readOnly = true)
     fun getAvailableSeats(scheduleId: Long): List<SeatResponse> {

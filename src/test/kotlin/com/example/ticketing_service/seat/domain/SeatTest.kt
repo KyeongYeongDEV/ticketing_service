@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 import kotlin.test.assertEquals
 
 class SeatTest {
-    private val dummySchule = ConcertSchedule(
+    private val dummySchedule = ConcertSchedule(
         concert = Concert(title = "테스트 콘서트", description = "설명"),
         concertDate = LocalDateTime.now(),
         totalSeats = 50
@@ -22,7 +22,7 @@ class SeatTest {
     @Test
     @DisplayName("정상적인 좌석 생성 성공")
     fun create_success() {
-        val seat = Seat.create(dummySchule, 1, BigDecimal("10000"))
+        val seat = Seat.create(dummySchedule, 1, BigDecimal("10000"))
         assertEquals(1, seat.seatNo)
         assertEquals(SeatStatus.AVAILABLE, seat.status)
     }
@@ -31,7 +31,7 @@ class SeatTest {
     @DisplayName("가격이 0이하면 예외 발생")
     fun create_fail_invalid_price() {
         val ex = assertThrows(BusinessException::class.java){
-            Seat.create(dummySchule, 1, BigDecimal("-100"))
+            Seat.create(dummySchedule, 1, BigDecimal("-100"))
         }
         assertEquals(ErrorCode.INVALID_INPUT_VALUE, ex.errorCode)
     }
@@ -39,7 +39,7 @@ class SeatTest {
     @Test
     @DisplayName("AVAILABLE 상태인 좌석은 점유 가능")
     fun hold_seat_success(){
-        val seat = Seat.create(dummySchule, 1, BigDecimal("10000"))
+        val seat = Seat.create(dummySchedule, 1, BigDecimal("10000"))
 
         seat.hold() // 좌석 예약 -> 결제 진행중
 
@@ -49,7 +49,7 @@ class SeatTest {
     @Test
     @DisplayName("이미 예약중인 좌석을 점유하려면 예외 발생")
     fun hold_seat_fail_already_reserved() {
-        val seat = Seat.create(dummySchule, 1, BigDecimal("10000"))
+        val seat = Seat.create(dummySchedule, 1, BigDecimal("10000"))
 
         seat.hold() // test 위한 강제 상태 변경
         seat.confirm()

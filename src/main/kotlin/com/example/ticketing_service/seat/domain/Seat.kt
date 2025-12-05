@@ -73,13 +73,16 @@ class Seat private constructor(
         if (this.status != SeatStatus.TEMPORARY) {
             // 점유 상태여야 결제 가능
             // 아니면 에러
-            throw BusinessException(ErrorCode.SEAT_NOT_FOUND)
+            throw BusinessException(ErrorCode.INVALID_SEAT_STATUS)
         }
         this.status = SeatStatus.SOLD
     }
 
     fun cancel() {
         // 만료 -> 점유 취소
+        if (this.status != SeatStatus.TEMPORARY) {
+             throw BusinessException(ErrorCode.INVALID_SEAT_STATUS)
+        }
         this.status = SeatStatus.AVAILABLE
     }
 
@@ -96,6 +99,25 @@ class Seat private constructor(
                 schedule = schedule,
                 seatNo = seatNo,
                 price = price
+            )
+        }
+
+        private fun createDummySchedule(): ConcertSchedule {
+            return ConcertSchedule(
+                concert = Concert(title = "", description = ""),
+                concertDate = LocalDateTime.now(),
+                totalSeats = 0
+            )
+        }
+
+        internal fun createJpaDummy(): Seat {
+            return Seat(
+                id = null,
+                schedule = createDummySchedule(),
+                seatNo = 0,
+                price = BigDecimal.ZERO,
+                status = SeatStatus.AVAILABLE,
+                version = 0
             )
         }
     }

@@ -1,7 +1,8 @@
 package com.example.ticketing_service.concert.application
 
-import com.example.ticketing_service.concert.infra.ConcertRepository
-import com.example.ticketing_service.concert.infra.ConcertScheduleRepository
+import com.example.ticketing_service.concert.domain.ConcertRepository
+import com.example.ticketing_service.concert.domain.ConcertScheduleRepository
+
 import com.example.ticketing_service.concert.presentation.dto.ConcertResponse
 import com.example.ticketing_service.concert.presentation.dto.ConcertScheduleResponse
 import org.springframework.stereotype.Service

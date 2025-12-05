@@ -4,7 +4,7 @@ import com.example.ticketing_service.concert.domain.Concert
 import com.example.ticketing_service.concert.domain.ConcertSchedule
 import com.example.ticketing_service.seat.domain.Seat
 import com.example.ticketing_service.seat.domain.SeatStatus
-import com.example.ticketing_service.seat.infra.SeatRepository
+import com.example.ticketing_service.seat.infra.SeatJpaRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -19,7 +19,7 @@ import kotlin.test.assertEquals
 @ExtendWith(MockKExtension::class)
 class SeatServiceTest {
     @MockK
-    lateinit var seatRepository: SeatRepository
+    lateinit var seatRepository: SeatJpaRepository
 
     @InjectMockKs
     lateinit var seatService : SeatService
