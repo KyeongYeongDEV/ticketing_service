@@ -23,7 +23,6 @@ class ReservationRepositoryImpl (
      * 결제와 같이 트랜잭션이 중요한 곳에서는 Eager(즉시 로딩) 쿼리가 필요합니다.
      */
     override fun findByIdWithSeat(id: Long): Optional<Reservation> {
-        // [수정] 일반 findById 대신 JPA 최적화 쿼리를 사용합니다.
         return jpaRepository.findByIdOptimized(id)
     }
 }
