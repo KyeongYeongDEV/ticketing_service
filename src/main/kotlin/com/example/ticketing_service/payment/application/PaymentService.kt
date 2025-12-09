@@ -16,7 +16,7 @@ class PaymentService (
     private val paymentClient : PaymentClient
 ){
     @Transactional
-    fun reservation(command : PaymentCommand) : Long {
+    fun processPayment(command : PaymentCommand) : Long {
         val reservation = reservationRepository.findByIdWithSeat(command.reservationId)
             .orElseThrow { BusinessException(ErrorCode.RESERVATION_NOT_FOUND) }
 
