@@ -22,6 +22,8 @@ enum class ErrorCode (
     SEAT_ALREADY_RESERVED("SE002", HttpStatus.BAD_REQUEST, "이미 선택된 좌석입니다."),
     INVALID_SEAT_STATUS("SE003", HttpStatus.BAD_REQUEST, "잘못된 좌석 상태입니다."),
 
+    // Reservation
+    RESERVATION_NOT_FOUND("RE001", HttpStatus.NOT_FOUND, "예약을 찾을 수 없습니다.."),
 
     // Payment
     PAYMENT_FAILED("PM001", HttpStatus.INTERNAL_SERVER_ERROR, "결제 승인에 실패했습니다.");
