@@ -23,8 +23,10 @@ enum class ErrorCode (
     INVALID_SEAT_STATUS("SE003", HttpStatus.BAD_REQUEST, "잘못된 좌석 상태입니다."),
 
     // Reservation
-    RESERVATION_NOT_FOUND("RE001", HttpStatus.NOT_FOUND, "예약을 찾을 수 없습니다.."),
+    RESERVATION_NOT_FOUND("RE001", HttpStatus.NOT_FOUND, "예약을 찾을 수 없습니다."),
+    RESERVATION_EXPIRED("RE002", HttpStatus.BAD_REQUEST, "예약 시간이 만료되었습니다."),
 
     // Payment
-    PAYMENT_FAILED("PM001", HttpStatus.INTERNAL_SERVER_ERROR, "결제 승인에 실패했습니다.");
+    PAYMENT_FAILED("PM001", HttpStatus.INTERNAL_SERVER_ERROR, "결제 승인에 실패했습니다."),
+    INVALID_PAYMENT_AMOUNT("PM002", HttpStatus.BAD_REQUEST, "결제 금액이 일치하지 않습니다.");
 }
