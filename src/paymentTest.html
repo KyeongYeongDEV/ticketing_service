@@ -1,26 +1,44 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8"> <title>결제 테스트</title>
+    <meta charset="UTF-8">
+    <title>결제 테스트</title>
     <script src="https://js.tosspayments.com/v1/payment"></script>
 </head>
 <body>
 <h2>토스 결제 테스트</h2>
+<p>F12를 눌러 콘솔(Console)에 에러가 뜨는지 확인하세요.</p>
 <button onclick="pay()">결제하기</button>
 
 <script>
     var clientKey = ''
-    var tossPayments = TossPayments(clientKey)
+
+    try {
+      var tossPayments = TossPayments(clientKey)
+    } catch (e) {
+      alert("토스 SDK 초기화 실패! 클라이언트 키를 확인하세요.\n" + e.message);
+    }
 
     function pay() {
+      // 결제 요청
       tossPayments.requestPayment('카드', {
         amount: 1000,
-        orderId: '123456', // DB에 있는 예약 ID와 일치시켜야 테스트 가능
+        orderId: '123456', // 이미 결제된 ID라면 숫자를 바꿔보세요 (예: 123457)
         orderName: '테스트 티켓',
         customerName: '박토스',
-        successUrl: window.location.origin + '/success',
-        failUrl: window.location.origin + '/fail',
+
+        // [수정] window.location.origin 대신 확실한 주소를 넣습니다.
+        successUrl: 'http://localhost:8080/success',
+        failUrl: 'http://localhost:8080/fail',
       })
+      .catch(function (error) {
+        // [중요] 버튼 눌렀을 때 반응이 없으면 이 알림창이 뜰 겁니다.
+        if (error.code === 'USER_CANCEL') {
+           // 사용자가 창을 닫음 (무시 가능)
+        } else {
+           alert("에러 발생: " + error.code + "\n" + error.message);
+        }
+      });
     }
 </script>
 </body>
