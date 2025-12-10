@@ -7,36 +7,35 @@
 </head>
 <body>
 <h2>토스 결제 테스트</h2>
-<p>F12를 눌러 콘솔(Console)에 에러가 뜨는지 확인하세요.</p>
+<p>DB 데이터 기반: 예약 ID 1번 / 금액 150,000원</p>
 <button onclick="pay()">결제하기</button>
 
 <script>
-    var clientKey = ''
+    // [중요] 본인의 클라이언트 키를 넣어주세요
+    var clientKey = 'test_ck_eqRGgYO1r5oPZaXWbZGn3QnN2Eya'
 
-    try {
-      var tossPayments = TossPayments(clientKey)
-    } catch (e) {
-      alert("토스 SDK 초기화 실패! 클라이언트 키를 확인하세요.\n" + e.message);
-    }
+    var tossPayments = TossPayments(clientKey)
 
     function pay() {
-      // 결제 요청
       tossPayments.requestPayment('카드', {
+        // 1. DB에 저장된 좌석 가격과 일치해야 합니다. (seats 테이블 id=1의 price)
         amount: 1000,
-        orderId: '123456', // 이미 결제된 ID라면 숫자를 바꿔보세요 (예: 123457)
-        orderName: '테스트 티켓',
-        customerName: '박토스',
 
-        // [수정] window.location.origin 대신 확실한 주소를 넣습니다.
-        successUrl: 'http://localhost:8080/success',
-        failUrl: 'http://localhost:8080/fail',
+        // 2. DB에 존재하는 예약 ID여야 합니다. (reservations 테이블 id)
+        orderId: '000001',
+
+        orderName: '아이유 콘서트 (좌석 1번)',
+        customerName: '테스트유저',
+
+        // 3. Controller 경로 확인 (/api/payments/...)
+        successUrl: 'http://localhost:8080/api/payments/success',
+        failUrl: 'http://localhost:8080/api/payments/fail',
       })
       .catch(function (error) {
-        // [중요] 버튼 눌렀을 때 반응이 없으면 이 알림창이 뜰 겁니다.
         if (error.code === 'USER_CANCEL') {
-           // 사용자가 창을 닫음 (무시 가능)
+           // 사용자 취소
         } else {
-           alert("에러 발생: " + error.code + "\n" + error.message);
+           alert("에러 발생: " + error.message);
         }
       });
     }
