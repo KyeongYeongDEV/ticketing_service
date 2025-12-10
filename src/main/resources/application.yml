@@ -18,7 +18,7 @@ spring:
       host: localhost
       port: 6379
 
-  payment:
-    toss:
-      secret-key: ${SECRET_KEY}
-      url: ${TOSS_PAYMENTS_URI}
+payment:
+  toss:
+    secret-key: test_sk_d46qopOB8969mO1QvYoL3ZmM75y0
+    url: https://api.tosspayments.com/v1/payments/confirm

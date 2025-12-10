@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8"> <title>결제 테스트</title>
+    <script src="https://js.tosspayments.com/v1/payment"></script>
+</head>
+<body>
+<h2>토스 결제 테스트</h2>
+<button onclick="pay()">결제하기</button>
+
+<script>
+    var clientKey = ''
+    var tossPayments = TossPayments(clientKey)
+
+    function pay() {
+      tossPayments.requestPayment('카드', {
+        amount: 1000,
+        orderId: '123456', // DB에 있는 예약 ID와 일치시켜야 테스트 가능
+        orderName: '테스트 티켓',
+        customerName: '박토스',
+        successUrl: window.location.origin + '/success',
+        failUrl: window.location.origin + '/fail',
+      })
+    }
+</script>
+</body>
+</html>

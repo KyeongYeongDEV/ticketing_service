@@ -47,11 +47,3 @@ class Payment private constructor(
         }
     }
 }
-
-
-//private constructor를 사용하는 이유?
-// 정적 팩토리 메소드를 사용하는 이유
-// @GeneratedValue(strategy = GenerationType.IDENTITY) 전부 다 설명
-//@OneToOne(fetch = FetchType.LAZY)
-//@JoinColumn(name = "reservation_id", nullable = false)
-//BaseEntity()를 사용하는 이유

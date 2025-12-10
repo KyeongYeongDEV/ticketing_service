@@ -8,8 +8,10 @@ import com.example.ticketing_service.payment.domain.PaymentClient
 import com.example.ticketing_service.payment.domain.PaymentRepository
 import com.example.ticketing_service.reservation.domain.ReservationRepository
 import jakarta.transaction.Transactional
+import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
+@Service
 class PaymentService (
     private val paymentRepository : PaymentRepository,
     private val reservationRepository : ReservationRepository,
