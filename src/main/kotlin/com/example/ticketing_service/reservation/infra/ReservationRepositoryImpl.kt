@@ -25,4 +25,12 @@ class ReservationRepositoryImpl (
     override fun findByIdWithSeat(id: Long): Optional<Reservation> {
         return jpaRepository.findByIdOptimized(id)
     }
+
+    override fun count(): Long {
+        return jpaRepository.count()
+    }
+
+    override fun deleteAll() {
+        jpaRepository.deleteAll()
+    }
 }

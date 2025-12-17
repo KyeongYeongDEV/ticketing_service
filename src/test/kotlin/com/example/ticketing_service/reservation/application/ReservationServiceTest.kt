@@ -1,10 +1,9 @@
-package com.example.ticketing_service.reservation.applicaion
+package com.example.ticketing_service.reservation.application
 
 import com.example.ticketing_service.concert.domain.Concert
 import com.example.ticketing_service.concert.domain.ConcertSchedule
 import com.example.ticketing_service.global.exception.BusinessException
 import com.example.ticketing_service.global.exception.ErrorCode
-import com.example.ticketing_service.reservation.application.ReservationService
 import com.example.ticketing_service.reservation.application.dto.ReserveSeatCommand
 import com.example.ticketing_service.reservation.domain.Reservation
 import com.example.ticketing_service.reservation.domain.ReservationRepository
