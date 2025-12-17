@@ -6,7 +6,7 @@ import com.example.ticketing_service.payment.application.PaymentService
 import com.example.ticketing_service.payment.presentation.dto.PaymentFailRequest
 import com.example.ticketing_service.payment.presentation.dto.PaymentRequest
 import com.example.ticketing_service.payment.presentation.dto.PaymentSuccessRequest
-import org.slf4j.LoggerFactory // [필수] 로깅을 위해 추가
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

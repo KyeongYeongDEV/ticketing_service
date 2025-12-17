@@ -30,6 +30,8 @@ class PaymentService (
             throw BusinessException(ErrorCode.INVALID_PAYMENT_AMOUNT)
         }
 
+        paymentClient.confirm(command.paymentKey, command.reservationId.toString(), command.amount)
+
         reservation.confirm()
         reservation.seat.confirm()
 
