@@ -1,8 +1,9 @@
 package com.example.ticketing_service.concert.application
 
 import com.example.ticketing_service.concert.domain.Concert
-import com.example.ticketing_service.concert.infra.ConcertRepository
-import com.example.ticketing_service.concert.infra.ConcertScheduleRepository
+import com.example.ticketing_service.concert.domain.ConcertRepository
+import com.example.ticketing_service.concert.domain.ConcertScheduleRepository
+
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK

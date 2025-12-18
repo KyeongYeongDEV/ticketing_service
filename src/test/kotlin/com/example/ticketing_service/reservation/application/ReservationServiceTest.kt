@@ -9,8 +9,8 @@ import com.example.ticketing_service.reservation.domain.Reservation
 import com.example.ticketing_service.reservation.domain.ReservationRepository
 import com.example.ticketing_service.reservation.domain.ReservationStatus
 import com.example.ticketing_service.seat.domain.Seat
+import com.example.ticketing_service.seat.domain.SeatRepository
 import com.example.ticketing_service.seat.domain.SeatStatus
-import com.example.ticketing_service.seat.infra.SeatJpaRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -27,21 +27,19 @@ import kotlin.test.Test
 
 @ExtendWith(MockKExtension::class)
 class ReservationServiceTest {
-    @MockK
-    lateinit var reservationRepository : ReservationRepository
 
     @MockK
-    lateinit var seatRepository : SeatJpaRepository
+    lateinit var reservationRepository: ReservationRepository
 
-    // Seat 엔터티의 hold() 메소드를 spy로 감시하기 위함
-    @MockK(relaxUnitFun = true)
-    lateinit var mockSeat : Seat
+    @MockK
+    lateinit var seatRepository: SeatRepository
+
 
     @InjectMockKs
-    lateinit var  reservationService : ReservationService
+    lateinit var reservationService: ReservationService
 
     private val dummySchedule = ConcertSchedule(
-        id = null,
+        id = 1L,
         concert = Concert(title = "C", description = "D"),
         concertDate = LocalDateTime.now(),
         totalSeats = 50
@@ -51,7 +49,6 @@ class ReservationServiceTest {
     @DisplayName("정상적인 좌석 예약 시 임시 점유 상태(TEMPORARY)로 성공한다")
     fun reserve_seat_success() {
         val command = ReserveSeatCommand(userId = 1L, seatId = 1L)
-
         val availableSeat = Seat.create(dummySchedule, 1, BigDecimal("10000"))
 
         every { seatRepository.findById(1L) } returns Optional.of(availableSeat)
@@ -61,7 +58,7 @@ class ReservationServiceTest {
         every { reservationRepository.save(capture(reservationSlot)) } answers {
             val inputReservation = reservationSlot.captured
 
-            val idField = Reservation::class.java.getDeclaredField("id")
+            val idField = inputReservation.javaClass.getDeclaredField("id")
             idField.isAccessible = true
             idField.set(inputReservation, 2L)
 
@@ -93,10 +90,12 @@ class ReservationServiceTest {
     fun reserve_seat_fail_already_held() {
         val command = ReserveSeatCommand(userId = 1L, seatId = 1L)
 
-        val heldSeat = Seat.create(dummySchedule, 1, BigDecimal("10000")).apply { status = SeatStatus.TEMPORARY }
+        val heldSeat = Seat.create(dummySchedule, 1, BigDecimal("10000")).apply {
+            this.status = SeatStatus.TEMPORARY
+        }
+
         every { seatRepository.findById(1L) } returns Optional.of(heldSeat)
 
-        // seat.hold() 메서드 내부에서 SEAT_ALREADY_RESERVED가 터지는지 확인
         val ex = assertThrows(BusinessException::class.java) {
             reservationService.reserveSeat(command)
         }
