@@ -42,11 +42,12 @@ class ReservationConcurrencyTest {
         val executorService = Executors.newFixedThreadPool(32)
         val latch = CountDownLatch(numberOfThreads)
 
-        // 결과 확인용 카운터들
         val successCount = AtomicInteger(0)
         val failCount = AtomicInteger(0)
         val optimisticLockConflictCount = AtomicInteger(0) // 낙관적 락 충돌 횟수
         val dbConstraintConflictCount = AtomicInteger(0)   // DB 유니크 제약 충돌 횟수
+
+        val startTime = System.currentTimeMillis()
 
         // When
         for (i in 1..numberOfThreads) {
@@ -84,12 +85,15 @@ class ReservationConcurrencyTest {
         }
 
         latch.await()
+        val endTime = System.currentTimeMillis()
+        val totalTime = endTime - startTime
 
         // Then
         val finalSeat = seatRepository.findById(targetSeatId).orElseThrow()
         val totalReservations = reservationRepository.count()
 
         println("=== 동시성 테스트 상세 결과 ===")
+        println("총 소요 시간: ${totalTime}ms")
         println("총 시도: $numberOfThreads")
         println("성공: ${successCount.get()}")
         println("실패: ${failCount.get()}")

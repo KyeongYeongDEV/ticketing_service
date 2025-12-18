@@ -36,7 +36,7 @@ class Seat private constructor(
     @Column(nullable = false)
     var status: SeatStatus = SeatStatus.AVAILABLE,
 
-    @Version // 낙천적 락은 위함
+
     var version: Long = 0
 
 ) : BaseEntity() {
