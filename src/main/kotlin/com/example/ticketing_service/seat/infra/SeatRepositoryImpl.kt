@@ -18,4 +18,8 @@ class SeatRepositoryImpl(
     override fun findAllByScheduleIdAndStatus(scheduleId: Long, status: SeatStatus): List<Seat> {
         return seatJpaRepository.findAllByScheduleIdAndStatus(scheduleId, status)
     }
+
+    override fun findByIdWithPessimisticLock(seatId: Long): Seat? {
+        return seatJpaRepository.findByIdWithPessimisticLock(seatId)
+    }
 }
