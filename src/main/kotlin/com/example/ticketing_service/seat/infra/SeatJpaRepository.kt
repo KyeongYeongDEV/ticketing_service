@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Lock
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.jpa.repository.QueryHints
+import org.springframework.data.repository.query.Param
 
 interface SeatJpaRepository : JpaRepository<Seat, Long> {
     fun findAllByScheduleIdAndStatus(scheduleId: Long, status: SeatStatus): List<Seat>
@@ -17,5 +18,5 @@ interface SeatJpaRepository : JpaRepository<Seat, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @QueryHints(QueryHint(name = "jakarta.persistence.lock.timeout", value = "3000"))
     @Query("select s from Seat s where s.id = :id")
-    fun findByIdWithPessimisticLock(seatId: Long): Seat?
+    fun findByIdWithPessimisticLock(@Param("id") seatId: Long): Seat?
 }
