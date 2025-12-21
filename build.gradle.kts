@@ -44,7 +44,7 @@ dependencies {
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
 
     // Redisson (Redis Client)
-    //implementation("org.redisson:redisson-spring-boot-starter:3.27.0") // 최신 버전 사용
+    implementation("org.redisson:redisson-spring-boot-starter:3.27.0")
 }
 
 kotlin {
