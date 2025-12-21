@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  ticketing-redis:
+    image: redis:alpine
+    container_name: ticketing-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - ticketing-net
+
+  ticketing-app:
+    build: .
+    container_name: ticketing-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=${DB_URL}
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+
+      - SPRING_DATA_REDIS_HOST=${REDIS_HOST}
+      - SPRING_DATA_REDIS_PORT=${REDIS_PORT}
+
+      - SECRET_KEY=${SECRET_KEY}
+      - CLIENT_KEY=${CLIENT_KEY}
+      - TOSS_PAYMENTS_URL=${TOSS_PAYMENTS_URL}
+    depends_on:
+      - ticketing-redis
+    networks:
+      - ticketing-net
+
+networks:
+  ticketing-net:
+    driver: bridge

@@ -32,8 +32,6 @@ dependencies {
     // DB
     runtimeOnly("com.mysql:mysql-connector-j")
 
-
-
     // MockK & H2
     testImplementation("io.mockk:mockk:1.13.9")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
@@ -44,6 +42,9 @@ dependencies {
 
     // Env
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+
+    // Redisson (Redis Client)
+    //implementation("org.redisson:redisson-spring-boot-starter:3.27.0") // 최신 버전 사용
 }
 
 kotlin {
