@@ -19,8 +19,8 @@ class ReservationService(
     @Transactional
     fun reserveSeat(command: ReserveSeatCommand): ReservationResponse {
 
-        val seat = seatRepository.findByIdWithPessimisticLock(command.seatId)
-            ?: throw BusinessException(ErrorCode.SEAT_NOT_FOUND)
+        val seat = seatRepository.findById(command.seatId)
+            .orElseThrow { BusinessException(ErrorCode.SEAT_NOT_FOUND) }
 
         seat.hold()
 
