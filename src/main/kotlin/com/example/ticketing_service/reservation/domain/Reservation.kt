@@ -65,4 +65,8 @@ class Reservation private constructor(
         }
         this.status = ReservationStatus.CONFIRMED
     }
+
+    fun cancel() {
+        this.status = ReservationStatus.CANCELLED
+    }
 }

@@ -20,5 +20,5 @@ spring:
 
 payment:
   toss:
-    secret-key: test_sk_d46qopOB8969mO1QvYoL3ZmM75y0
+    secret-key: ${SECRET_KEY}
     url: https://api.tosspayments.com/v1/payments/confirm

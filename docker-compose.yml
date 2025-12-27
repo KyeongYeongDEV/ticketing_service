@@ -3,6 +3,8 @@ version: '3.8'
 services:
   ticketing-redis:
     image: redis:alpine
+
+    command: ["redis-server", "--notify-keyspace-events", "Ex"]
     container_name: ticketing-redis
     ports:
       - "6379:6379"

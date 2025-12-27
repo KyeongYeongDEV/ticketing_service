@@ -44,7 +44,10 @@ dependencies {
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
 
     // Redisson (Redis Client)
-    implementation("org.redisson:redisson-spring-boot-starter:3.27.0")
+    implementation("org.redisson:redisson-spring-boot-starter:3.43.0") {
+        exclude(group = "io.lettuce", module = "lettuce-core")
+    }
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 }
 
 kotlin {

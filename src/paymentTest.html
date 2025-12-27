@@ -11,23 +11,22 @@
 <button onclick="pay()">결제하기</button>
 
 <script>
-    // [중요] 본인의 클라이언트 키를 넣어주세요
-    var clientKey = 'test_ck_eqRGgYO1r5oPZaXWbZGn3QnN2Eya'
+    var clientKey = 'input-test-key'
 
     var tossPayments = TossPayments(clientKey)
 
     function pay() {
       tossPayments.requestPayment('카드', {
-        // 1. DB에 저장된 좌석 가격과 일치해야 합니다. (seats 테이블 id=1의 price)
+        // DB에 저장된 좌석 가격과 일치해야 한다.
         amount: 1000,
 
-        // 2. DB에 존재하는 예약 ID여야 합니다. (reservations 테이블 id)
+        // DB에 존재하는 예약 ID여야 한다.
         orderId: '000001',
 
         orderName: '아이유 콘서트 (좌석 1번)',
         customerName: '테스트유저',
 
-        // 3. Controller 경로 확인 (/api/payments/...)
+        // Controller 경로 확인 (/api/payments/...)
         successUrl: 'http://localhost:8080/api/payments/success',
         failUrl: 'http://localhost:8080/api/payments/fail',
       })
