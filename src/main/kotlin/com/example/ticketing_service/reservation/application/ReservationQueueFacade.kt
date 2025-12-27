@@ -17,7 +17,10 @@ class ReservationQueueFacade(
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
     private val QUEUE_NAME = "reservation_cancel_queue"
+    private val DLQ_NAME = "reservation_cancel_dlq"
+
     private val consumerThreadPool : ExecutorService = Executors.newFixedThreadPool(5)
+
 
     fun addToDelayQueue(reservationId: Long) {
         val blockingQueue: RBlockingQueue<Long> = redissonClient.getBlockingQueue(QUEUE_NAME)
@@ -38,7 +41,9 @@ class ReservationQueueFacade(
                 while (!Thread.currentThread().isInterrupted) {
                     try {
                         val reservationId = blockingQueue.take()
-                        reservationCancelService.cancelReservation(reservationId)
+
+                        // 재시도 로직으로 위임
+                        processWithRetry(reservationId)
                     } catch (e: InterruptedException) {
                         Thread.currentThread().interrupt()
                         break
@@ -47,6 +52,42 @@ class ReservationQueueFacade(
                     }
                 }
             }
+        }
+    }
+
+    private fun processWithRetry(reservationId: Long) {
+        val maxRetry = 3
+        var retryCount = 0
+
+        while (retryCount < maxRetry) {
+            try {
+                reservationCancelService.cancelReservation(reservationId)
+                return
+
+            } catch (e: Exception) {
+                retryCount++
+                log.warn("[Retry] 예약($reservationId) 취소 실패 ($retryCount/$maxRetry) - ${e.message}")
+
+                // 재시도(Backoff)
+                try {
+                    Thread.sleep(1000)
+                } catch (ie: InterruptedException) {
+                    Thread.currentThread().interrupt()
+                }
+            }
+        }
+
+        // 3번 모두 실패 시 실패 큐에 저장
+        moveToDeadLetterQueue(reservationId)
+    }
+
+    private fun moveToDeadLetterQueue(reservationId: Long) {
+        try {
+            val deadLetterQueue = redissonClient.getList<Long>(DLQ_NAME)
+            deadLetterQueue.add(reservationId)
+            log.error("💀 [DeadLetterQueue] 예약($reservationId) 처리 최종 실패 -> DeadLetterQueue 이동됨")
+        } catch (e: Exception) {
+            log.error("💀 [DeadLetterQueue] DeadLetterQueue 저장조차 실패", e)
         }
     }
 }
