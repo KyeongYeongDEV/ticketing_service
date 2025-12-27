@@ -1,6 +1,7 @@
 package com.example.ticketing_service.reservation.application
 
 import jakarta.annotation.PostConstruct
+import jakarta.annotation.PreDestroy
 import org.redisson.api.RBlockingQueue
 import org.redisson.api.RedissonClient
 import org.slf4j.LoggerFactory
@@ -88,6 +89,21 @@ class ReservationQueueFacade(
             log.error("💀 [DeadLetterQueue] 예약($reservationId) 처리 최종 실패 -> DeadLetterQueue 이동됨")
         } catch (e: Exception) {
             log.error("💀 [DeadLetterQueue] DeadLetterQueue 저장조차 실패", e)
+        }
+    }
+
+    // Graceful Shutdown
+    @PreDestroy
+    fun stop() {
+        log.info("[ReservationQueue] 애플리케이션 종료 요청 - 스레드 풀 정리 중")
+        consumerThreadPool.shutdown()
+        try {
+            if (!consumerThreadPool.awaitTermination(10, TimeUnit.SECONDS)) {
+                consumerThreadPool.shutdownNow()
+                log.warn("[ReservationQueue] 스레드 풀 강제 종료됨")
+            }
+        } catch (e: InterruptedException) {
+            consumerThreadPool.shutdownNow()
         }
     }
 }
