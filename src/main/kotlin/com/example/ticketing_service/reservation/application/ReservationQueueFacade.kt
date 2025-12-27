@@ -5,6 +5,8 @@ import org.redisson.api.RBlockingQueue
 import org.redisson.api.RedissonClient
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
@@ -15,6 +17,7 @@ class ReservationQueueFacade(
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
     private val QUEUE_NAME = "reservation_cancel_queue"
+    private val consumerThreadPool : ExecutorService = Executors.newFixedThreadPool(5)
 
     fun addToDelayQueue(reservationId: Long) {
         val blockingQueue: RBlockingQueue<Long> = redissonClient.getBlockingQueue(QUEUE_NAME)
@@ -27,22 +30,21 @@ class ReservationQueueFacade(
 
     @PostConstruct
     fun startConsumer() {
-        thread(name = "Reservation-Delay-Consumer") {
-            val blockingQueue: RBlockingQueue<Long> = redissonClient.getBlockingQueue(QUEUE_NAME)
+        repeat(5) { threadId ->
+            consumerThreadPool.submit {
+                val blockingQueue = redissonClient.getBlockingQueue<Long>(QUEUE_NAME)
+                log.info("[Consumer-$threadId] 시작됨")
 
-            log.info("[System] 지연 큐 컨슈머 스레드 시작됨")
-
-            while (true) {
-                try {
-                    val reservationId = blockingQueue.take()
-                    reservationCancelService.cancelReservation(reservationId)
-
-                } catch (e: InterruptedException) {
-                    Thread.currentThread().interrupt()
-                    log.warn("[System] 컨슈머 스레드 종료됨")
-                    break
-                } catch (e: Exception) {
-                    log.error("[Error] 취소 처리 중 예외 발생", e)
+                while (!Thread.currentThread().isInterrupted) {
+                    try {
+                        val reservationId = blockingQueue.take()
+                        reservationCancelService.cancelReservation(reservationId)
+                    } catch (e: InterruptedException) {
+                        Thread.currentThread().interrupt()
+                        break
+                    } catch (e: Exception) {
+                        log.error("에러 발생", e)
+                    }
                 }
             }
         }
