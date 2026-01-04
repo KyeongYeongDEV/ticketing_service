@@ -30,5 +30,8 @@ enum class ErrorCode (
 
     // Payment
     PAYMENT_FAILED("PM001", HttpStatus.INTERNAL_SERVER_ERROR, "결제 승인에 실패했습니다."),
-    INVALID_PAYMENT_AMOUNT("PM002", HttpStatus.BAD_REQUEST, "결제 금액이 일치하지 않습니다.");
+    INVALID_PAYMENT_AMOUNT("PM002", HttpStatus.BAD_REQUEST, "결제 금액이 일치하지 않습니다."),
+
+    DUPLICATE_REQUEST("G006", HttpStatus.CONFLICT, "이미 처리 중이거나 처리된 요청입니다."),
+    QUEUE_TOKEN_NOT_FOUND("QU001", HttpStatus.FORBIDDEN, "대기열을 통과하지 않은 사용자입니다. 대기 페이지로 이동해주세요.");
 }

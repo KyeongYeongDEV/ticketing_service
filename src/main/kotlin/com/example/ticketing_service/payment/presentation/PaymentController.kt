@@ -1,5 +1,6 @@
 package com.example.ticketing_service.payment.presentation
 
+import com.example.ticketing_service.global.annotation.Idempotent
 import com.example.ticketing_service.global.common.response.ApiResponse
 import com.example.ticketing_service.global.exception.ErrorCode
 import com.example.ticketing_service.payment.application.PaymentService
@@ -18,6 +19,7 @@ class PaymentController(
     private val log = LoggerFactory.getLogger(this::class.java)
 
     @PostMapping("/confirm")
+    @Idempotent
     fun confirmPayment(@RequestBody request: PaymentRequest): ResponseEntity<ApiResponse<Long>> {
         val paymentId = paymentService.processPayment(request.toCommand())
 
