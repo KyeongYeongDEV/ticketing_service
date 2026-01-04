@@ -4,18 +4,21 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+
   jpa:
     hibernate:
       ddl-auto: create-drop
-    show-sql: true
     properties:
       hibernate:
         format_sql: true
+        show_sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 payment:
   toss:
     secret-key: test_toss_secret_key_12345
-    client-key: test_toss_client_key_12345
-    success-url: http://localhost:8080/api/payments/success
-    fail-url: http://localhost:8080/api/payments/fail
-    url: https://api.tosspayments.com/v1/payments
+    url: https://api.tosspayments.com/v1/payments/confirm
