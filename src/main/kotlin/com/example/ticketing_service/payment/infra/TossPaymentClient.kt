@@ -5,6 +5,7 @@ import com.example.ticketing_service.global.exception.ErrorCode
 import com.example.ticketing_service.payment.domain.PaymentClient
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
+import org.springframework.http.client.SimpleClientHttpRequestFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
 import java.math.BigDecimal
@@ -16,7 +17,15 @@ class TossPaymentClient(
     @Value("\${payment.toss.url}") private val confirmUrl: String
 ) : PaymentClient {
 
-    private val restClient = RestClient.create()
+    private val restClient = RestClient.builder()
+        .baseUrl(confirmUrl)
+        .requestFactory(
+            SimpleClientHttpRequestFactory().apply {
+                setConnectTimeout(5000) // 연결 타임아웃 5초
+                setReadTimeout(10000)   // 읽기 타임아웃 10초
+            }
+        )
+        .build()
 
     override fun confirm(paymentKey: String, orderId: String, amount: BigDecimal): String {
         val encodedKey = Base64.getEncoder().encodeToString("$secretKey:".toByteArray())
