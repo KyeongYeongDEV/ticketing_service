@@ -31,11 +31,26 @@ class ReservationFacade(
 
             log.info("[Facade] 예약 성공 (ReservationID: {}, SeatID: {})", response.reservationId, command.seatId)
 
-            reservationQueueFacade.addToDelayQueue(response.reservationId)
+            try {
+                reservationQueueFacade.addToDelayQueue(response.reservationId)
+            } catch (e: Exception) {
+                // 큐 등록 실패 시 -> 방금 만든 예약 강제 취소 (Rollback)
+                log.error("Redis 큐 등록 실패로 인한 보상 트랜잭션 실행. ID: ${response.reservationId}", e)
+
+                try {
+                    reservationService.cancelReservation(response.reservationId)
+                } catch (rollbackEx: Exception) {
+                    // 롤백까지 실패한 경우  -> 추후 배로나 로그 모니터링으로 처리 필요
+                    log.error("CRITICAL: 예약 롤백 실패! 데이터 불일치 발생 가능. ID: ${response.reservationId}", rollbackEx)
+                }
+
+                throw e
+            }
 
             return response
 
-        } finally {
+        }
+        finally {
             redisLockRepository.unlock(lockKey, lockToken)
         }
     }

@@ -38,4 +38,13 @@ class ReservationService(
             amount = seat.price
         )
     }
+
+    @Transactional
+    fun cancelReservation(reservationId: Long) {
+        val reservation = reservationRepository.findById(reservationId)
+            .orElseThrow { BusinessException(ErrorCode.RESERVATION_NOT_FOUND) }
+
+        // 엔티티의 비즈니스 메서드 호출
+        reservation.cancel()
+    }
 }
