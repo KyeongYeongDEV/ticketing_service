@@ -2,17 +2,7 @@ package com.example.ticketing_service.payment.domain
 
 import com.example.ticketing_service.common.entity.BaseEntity
 import com.example.ticketing_service.reservation.domain.Reservation
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.math.BigDecimal
 
 @Entity
@@ -20,29 +10,36 @@ import java.math.BigDecimal
 class Payment private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id : Long? = null,
+    val id: Long? = null,
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id", nullable = false)
     val reservation: Reservation,
 
     @Column(nullable = false)
-    val paymentKey : String,
+    val paymentKey: String,
 
     @Column(nullable = false)
-    val amount : BigDecimal,
+    val amount: BigDecimal
+) : BaseEntity() {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var status : PaymentStatus
-) : BaseEntity() {
+    var status: PaymentStatus = PaymentStatus.DONE
+        protected set
+
+    protected constructor() : this(
+        reservation = Reservation.createDummy(),
+        paymentKey = "",
+        amount = BigDecimal.ZERO
+    )
+
     companion object {
-        fun create(reservation : Reservation, paymentKey : String, amount : BigDecimal) : Payment {
+        fun create(reservation: Reservation, paymentKey: String, amount: BigDecimal): Payment {
             return Payment(
                 reservation = reservation,
                 paymentKey = paymentKey,
-                amount = amount,
-                status = PaymentStatus.DONE
+                amount = amount
             )
         }
     }

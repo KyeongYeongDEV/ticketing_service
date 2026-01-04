@@ -31,33 +31,34 @@ class Reservation private constructor(
     @JoinColumn(name = "seat_id", nullable = false, unique = true)
     val seat : Seat,
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    var status: ReservationStatus,
-
     @Column(nullable = false)
     val expiredAt: LocalDateTime // 결제 만료 시간 (TTL)
     ) : BaseEntity() {
-        protected constructor() : this(
-            userId = 0,
-            seat = Seat.createJpaDummy(),
-            status = ReservationStatus.PENDING,
-            expiredAt = LocalDateTime.MIN
-        )
 
-        companion object{
-            fun create(userId : Long, seat : Seat) : Reservation {
-                // 만료 시간 5분
-                val expiredAt = LocalDateTime.now().plusMinutes(5)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    var status: ReservationStatus = ReservationStatus.PENDING
+        protected set
 
-                return Reservation(
-                    userId = userId,
-                    seat = seat,
-                    status = ReservationStatus.PENDING,
-                    expiredAt = expiredAt
-                )
-            }
+    protected constructor() : this(
+        userId = 0,
+        seat = Seat.createJpaDummy(),
+        expiredAt = LocalDateTime.MIN
+    )
+
+    companion object {
+        fun create(userId: Long, seat: Seat): Reservation {
+            return Reservation(
+                userId = userId,
+                seat = seat,
+                expiredAt = LocalDateTime.now().plusMinutes(5)
+            )
         }
+
+        fun createDummy(): Reservation {
+            return Reservation()
+        }
+    }
 
     fun confirm() {
         if (this.status != ReservationStatus.PENDING) {
@@ -67,6 +68,13 @@ class Reservation private constructor(
     }
 
     fun cancel() {
+        if (this.status == ReservationStatus.CONFIRMED) {
+            throw BusinessException(ErrorCode.INVALID_INPUT_VALUE)
+        }
+        // 멱등성을 위해 이미 취소된 경우 에러를 던지지 않거나 필요 시 던짐
+        if (this.status == ReservationStatus.CANCELLED) {
+            throw BusinessException(ErrorCode.INVALID_INPUT_VALUE)
+        }
         this.status = ReservationStatus.CANCELLED
     }
 }
