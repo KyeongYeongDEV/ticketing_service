@@ -21,8 +21,8 @@ class TossPaymentClient(
         .baseUrl(confirmUrl)
         .requestFactory(
             SimpleClientHttpRequestFactory().apply {
-                setConnectTimeout(5000) // 연결 타임아웃 5초
                 setReadTimeout(10000)   // 읽기 타임아웃 10초
+                setConnectTimeout(5000) // 연결 타임아웃 5초
             }
         )
         .build()
@@ -38,7 +38,7 @@ class TossPaymentClient(
 
         try {
             val response = restClient.post()
-                .uri(confirmUrl)
+                .uri("")
                 .header("Authorization", "Basic $encodedKey")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(requestBody)

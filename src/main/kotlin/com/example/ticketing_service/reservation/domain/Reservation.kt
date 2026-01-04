@@ -4,17 +4,7 @@ import com.example.ticketing_service.common.entity.BaseEntity
 import com.example.ticketing_service.global.exception.BusinessException
 import com.example.ticketing_service.global.exception.ErrorCode
 import com.example.ticketing_service.seat.domain.Seat
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
@@ -22,18 +12,19 @@ import java.time.LocalDateTime
 class Reservation private constructor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id : Long? = null,
+    val id: Long? = null,
 
     @Column(name = "user_id", nullable = false)
-    val userId : Long,
+    val userId: Long,
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seat_id", nullable = false, unique = true)
-    val seat : Seat,
+    val seat: Seat,
 
     @Column(nullable = false)
-    val expiredAt: LocalDateTime // 결제 만료 시간 (TTL)
-    ) : BaseEntity() {
+    val expiredAt: LocalDateTime
+
+) : BaseEntity() {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
