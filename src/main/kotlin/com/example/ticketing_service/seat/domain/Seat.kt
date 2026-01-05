@@ -9,12 +9,6 @@ import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
-enum class SeatStatus {
-    AVAILABLE,  // 판매 가능
-    TEMPORARY,  // 예약 중
-    SOLD        // 판매 완료
-}
-
 @Entity
 @Table(
     name = "seats",
@@ -42,7 +36,7 @@ class Seat private constructor(
     @Column(nullable = false)
     var status: SeatStatus = SeatStatus.AVAILABLE,
 
-    @Version // 낙천적 락은 위함
+
     var version: Long = 0
 
 ) : BaseEntity() {

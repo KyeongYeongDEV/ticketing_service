@@ -11,14 +11,16 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class ReservationService (
+class ReservationService(
     private val reservationRepository: ReservationRepository,
     private val seatRepository: SeatRepository
 ) {
+
     @Transactional
-    fun reserveSeat(command : ReserveSeatCommand) : ReservationResponse {
+    fun reserveSeat(command: ReserveSeatCommand): ReservationResponse {
+
         val seat = seatRepository.findById(command.seatId)
-            .orElseThrow { throw BusinessException(ErrorCode.SEAT_NOT_FOUND) }
+            .orElseThrow { BusinessException(ErrorCode.SEAT_NOT_FOUND) }
 
         seat.hold()
 
@@ -35,5 +37,14 @@ class ReservationService (
             seatNo = seat.seatNo,
             amount = seat.price
         )
+    }
+
+    @Transactional
+    fun cancelReservation(reservationId: Long) {
+        val reservation = reservationRepository.findById(reservationId)
+            .orElseThrow { BusinessException(ErrorCode.RESERVATION_NOT_FOUND) }
+
+        // 엔티티의 비즈니스 메서드 호출
+        reservation.cancel()
     }
 }
