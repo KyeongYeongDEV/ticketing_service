@@ -53,4 +53,25 @@ class TossPaymentClient(
             throw BusinessException(ErrorCode.PAYMENT_FAILED)
         }
     }
+
+    override fun validatePayment(orderId: String): String {
+        try {
+            val encodedKey = Base64.getEncoder().encodeToString("$secretKey:".toByteArray())
+
+            // 조회 API용 URL로 교체 필요
+            val checkUrl = "https://api.tosspayments.com/v1/payments/orders/$orderId"
+
+            val response = RestClient.create().get() // 새 클라이언트 사용 (URL 충돌 방지)
+                .uri(checkUrl)
+                .header("Authorization", "Basic $encodedKey")
+                .retrieve()
+                .toEntity(String::class.java)
+
+            // 200 OK면 결제된 것
+            return if (response.statusCode.is2xxSuccessful) "DONE" else "UNKNOWN"
+        } catch (e: Exception) {
+            // 404 등 에러면 결제 안 된 것
+            return "NOT_FOUND"
+        }
+    }
 }
