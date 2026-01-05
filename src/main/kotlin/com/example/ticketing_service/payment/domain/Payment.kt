@@ -25,7 +25,8 @@ class Payment private constructor(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var status: PaymentStatus = PaymentStatus.DONE
+
+    var status: PaymentStatus = PaymentStatus.PENDING
         protected set
 
     protected constructor() : this(
@@ -42,5 +43,13 @@ class Payment private constructor(
                 amount = amount
             )
         }
+    }
+
+    fun complete() {
+        this.status = PaymentStatus.DONE
+    }
+
+    fun cancel() {
+        this.status = PaymentStatus.CANCELED
     }
 }
