@@ -25,7 +25,7 @@ class RedisQueueListener(
             // 알림 전송
             logger.info("[SSE] 유저($userId)가 이 서버에 존재합니다. 입장 알림 전송.")
             try {
-                emitter.send(SseEmitter.event().name(RedisChannel.ENTRY).data("입장 가능합니다."))
+                emitter.send(SseEmitter.event().name("entry").data("입장 가능합니다."))
                 // 연결 종료
                 emitter.complete()
             } catch (e: Exception) {
