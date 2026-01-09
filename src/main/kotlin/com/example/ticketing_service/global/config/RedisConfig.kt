@@ -1,5 +1,6 @@
 package com.example.ticketing_service.global.config
 
+import com.example.ticketing_service.global.common.RedisChannel
 import com.example.ticketing_service.queue.infra.RedisQueueListener
 import org.redisson.Redisson
 import org.redisson.api.RedissonClient
@@ -34,7 +35,7 @@ class RedissonConfig(
         container.setConnectionFactory(connectionFactory)
 
         // queue:entry 채널을 구독하도록 리스너 연결
-        container.addMessageListener(listener, ChannelTopic("queue:entry"))
+        container.addMessageListener(listener, ChannelTopic(RedisChannel.ENTRY))
 
         return container
     }

@@ -1,5 +1,6 @@
 package com.example.ticketing_service.queue.scheduler
 
+import com.example.ticketing_service.global.common.RedisChannel
 import com.example.ticketing_service.global.common.RedisLockRepository
 import org.slf4j.LoggerFactory
 import org.springframework.data.redis.core.StringRedisTemplate
@@ -38,7 +39,7 @@ class WaitingQueueScheduler(
 
                     // Redis Pub/Sub으로 알림 발송
                     // "queue:entry" 채널에 userId를 던지면, 모든 서버의 리스너가 듣습니다.
-                    redisTemplate.convertAndSend("queue:entry", userId)
+                    redisTemplate.convertAndSend(RedisChannel.ENTRY, userId)
                 }
             }
         } catch (e: Exception) {
