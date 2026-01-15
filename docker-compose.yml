@@ -3,7 +3,6 @@ version: '3.8'
 services:
   ticketing-redis:
     image: redis:alpine
-
     command: ["redis-server", "--notify-keyspace-events", "Ex"]
     container_name: ticketing-redis
     ports:
@@ -11,19 +10,36 @@ services:
     networks:
       - ticketing-net
 
-  ticketing-app:
-    build: .
-    container_name: ticketing-app
+  ticketing-service:
+    build: ./ticketing_server
+    container_name: ticketing-service
     ports:
       - "8080:8080"
     environment:
+      - SPRING_DATA_REDIS_HOST=ticketing-redis
+      - SPRING_DATA_REDIS_PORT=6379
       - SPRING_DATASOURCE_URL=${DB_URL}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+      - CLIENT_KEY=${CLIENT_KEY}
+      - TOSS_PAYMENTS_URL=${TOSS_PAYMENTS_URL}
+    depends_on:
+      - ticketing-redis
+    networks:
+      - ticketing-net
 
-      - SPRING_DATA_REDIS_HOST=${REDIS_HOST}
-      - SPRING_DATA_REDIS_PORT=${REDIS_PORT}
-
+  payment-service:
+    build: ./payment_server
+    container_name: payment-service
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_DATA_REDIS_HOST=ticketing-redis
+      - SPRING_DATA_REDIS_PORT=6379
+      - SPRING_DATASOURCE_URL=${DB_URL}
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SECRET_KEY=${SECRET_KEY}
       - CLIENT_KEY=${CLIENT_KEY}
       - TOSS_PAYMENTS_URL=${TOSS_PAYMENTS_URL}

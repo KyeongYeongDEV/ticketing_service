@@ -1,7 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.9.25" // 또는 최신 코틀린 버전
+    kotlin("jvm") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
-    // [수정 1] Spring Boot 4.0.0은 없습니다. 최신 안정 버전인 3.x로 변경하세요.
     id("org.springframework.boot") version "3.4.0"
     id("io.spring.dependency-management") version "1.1.6"
     kotlin("plugin.jpa") version "1.9.25"
