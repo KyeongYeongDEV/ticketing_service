@@ -21,6 +21,9 @@ services:
       - SPRING_DATASOURCE_URL=${DB_URL}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+      - CLIENT_KEY=${CLIENT_KEY}
+      - TOSS_PAYMENTS_URL=${TOSS_PAYMENTS_URL}
     depends_on:
       - ticketing-redis
     networks:
@@ -37,6 +40,9 @@ services:
       - SPRING_DATASOURCE_URL=${DB_URL}
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
+      - CLIENT_KEY=${CLIENT_KEY}
+      - TOSS_PAYMENTS_URL=${TOSS_PAYMENTS_URL}
     depends_on:
       - ticketing-redis
     networks:
